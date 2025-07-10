@@ -32,6 +32,7 @@ PR-Agent aims to help efficiently review and handle pull requests, by providing 
 - [Getting Started](#getting-started)
 - [News and Updates](#news-and-updates)
 - [Why Use PR-Agent?](#why-use-pr-agent)
+- [Why Use this fork?](#gigaChat-support-fork)
 - [Features](#features)
 - [See It in Action](#see-it-in-action)
 - [Try It Now](#try-it-now)
