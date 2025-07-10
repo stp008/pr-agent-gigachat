@@ -69,6 +69,18 @@ Zero-setup hosted solution with advanced features and priority support
 ### Qodo Merge as a Post-commit in Your Local IDE
 You can receive automatic feedback from Qodo Merge on your local IDE after each [commit](https://github.com/qodo-ai/agents/tree/main/agents/qodo-merge-post-commit)
 
+## GigaChat Support Fork
+
+This fork adds native support for **GigaChat** models through the [litellm-gigachat](https://github.com/stp008/litellm-gigachat) proxy server. Key features:
+
+- **Native GigaChat integration**: Use GigaChat models (`gigachat-max`, `gigachat-pro`) with PR-Agent
+- **Bitbucket Server webhook setup**: Complete guide for setting up PR-Agent as a webhook server for Bitbucket Server
+- **Easy configuration**: Simple TOML-based configuration with fallback model support
+
+#### Quick Setup for GigaChat
+1. Set up [litellm-gigachat](https://github.com/stp008/litellm-gigachat) proxy server
+2. Configure PR-Agent with GigaChat models
+3. For Bitbucket Server: Follow the [Bitbucket webhook setup guide](docs/docs/installation/bitbucket_webhook.md)
 
 ## News and Updates
 
