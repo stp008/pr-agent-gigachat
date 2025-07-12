@@ -170,9 +170,9 @@ class PRHelpMessage:
                 # prepare the answer
                 answer_str = ""
                 if response_str:
-                    answer_str += f"### Question: \n{self.question_str}\n\n"
-                    answer_str += f"### Answer:\n{response_str.strip()}\n\n"
-                    answer_str += f"#### Relevant Sources:\n\n"
+                    answer_str += f"### Вопрос: \n{self.question_str}\n\n"
+                    answer_str += f"### Ответ:\n{response_str.strip()}\n\n"
+                    answer_str += f"#### Релевантные источники:\n\n"
                     base_path = "https://qodo-merge-docs.qodo.ai/"
                     for section in relevant_sections:
                         file = section.get('file_name').strip().removesuffix('.md')
@@ -191,16 +191,16 @@ class PRHelpMessage:
             else:
                 if not isinstance(self.git_provider, BitbucketServerProvider) and not self.git_provider.is_supported("gfm_markdown"):
                     self.git_provider.publish_comment(
-                        "The `Help` tool requires gfm markdown, which is not supported by your code platform.")
+                        "Инструмент `Help` требует gfm markdown, который не поддерживается вашей платформой кода.")
                     return
 
                 get_logger().info('Getting PR Help Message...')
                 relevant_configs = {'pr_help': dict(get_settings().pr_help),
                                     'config': dict(get_settings().config)}
                 get_logger().debug("Relevant configs", artifacts=relevant_configs)
-                pr_comment = "## PR Agent Walkthrough 🤖\n\n"
-                pr_comment += "Welcome to the PR Agent, an AI-powered tool for automated pull request analysis, feedback, suggestions and more."""
-                pr_comment += "\n\nHere is a list of tools you can use to interact with the PR Agent:\n"
+                pr_comment = "## Руководство по PR Agent 🤖\n\n"
+                pr_comment += "Добро пожаловать в PR Agent - инструмент на базе ИИ для автоматического анализа pull request'ов, обратной связи, предложений и многого другого."""
+                pr_comment += "\n\nВот список инструментов, которые вы можете использовать для взаимодействия с PR Agent:\n"
                 base_path = "https://pr-agent-docs.codium.ai/tools"
 
                 tool_names = []
