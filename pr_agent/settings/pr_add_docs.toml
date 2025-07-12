@@ -123,4 +123,5 @@ The PR Diff:
 
 Response (should be a valid YAML, and nothing else):
 ```yaml
+Answer in russian language.
 """

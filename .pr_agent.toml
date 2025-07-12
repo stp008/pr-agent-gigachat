@@ -1,3 +1,22 @@
+[config]
+model="openai/gigachat-max"
+fallback_models=["openai/gigachat-pro"]
+custom_model_max_tokens=200000
+git_provider="bitbucket_server"
+
+[openai]
+api_base = "http://localhost:4000"
+
+[bitbucket_server]
+bearer_token = "BBDC-ODQzOTM0Mjk5NjE0Ojy/2JKhSxuq3Xtb4HumHevjWtZG"
+webhook_secret = "webhook-secret-123"
+url = "http://localhost:7990"
+pr_commands = [
+    "/describe --pr_description.final_update_message=false",
+    "/review",
+    "/improve --pr_code_suggestions.commitable_code_suggestions=true",
+]
+
 [pr_reviewer]
 enable_review_labels_effort = true
 enable_auto_approval = true

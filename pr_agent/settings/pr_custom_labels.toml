@@ -83,4 +83,5 @@ Note that lines in the diff body are prefixed with a symbol that represents the 
 
 Response (should be a valid YAML, and nothing else):
 ```yaml
+Answer in russian language.
 """

@@ -65,7 +65,7 @@ async def get_body(request):
         body = await request.json()
     except Exception as e:
         get_logger().error("Error parsing request body", artifact={'error': e})
-        raise HTTPException(status_code=400, detail="Error parsing request body") from e
+        raise HTTPException(status_code=400, detail="Ошибка парсинга тела запроса") from e
     webhook_secret = getattr(get_settings().github, 'webhook_secret', None)
     if webhook_secret:
         body_bytes = await request.body()

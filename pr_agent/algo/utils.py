@@ -59,8 +59,8 @@ class TodoItem(TypedDict):
 
 
 class PRReviewHeader(str, Enum):
-    REGULAR = "## PR Reviewer Guide"
-    INCREMENTAL = "## Incremental PR Reviewer Guide"
+    REGULAR = "## Руководство по ревью PR"
+    INCREMENTAL = "## Руководство по инкрементальному ревью PR"
 
 
 class ReasoningEffort(str, Enum):
@@ -148,6 +148,20 @@ def convert_to_markdown_v2(output_data: dict,
         "Code feedback": "🤖",
         "Estimated effort to review [1-5]": "⏱️",
         "Ticket compliance check": "🎫",
+        # Русские переводы
+        "Можно разделить": "🔀",
+        "Ключевые вопросы для ревью": "⚡",
+        "Рекомендуемые области для ревью": "⚡",
+        "Оценка": "🏅",
+        "Соответствующие тесты": "🧪",
+        "Сфокусированный PR": "✨",
+        "Соответствующий тикет": "🎫",
+        "Проблемы безопасности": "🔒",
+        "Секции TODO": "📝",
+        "Выводы из ответов пользователя": "📝",
+        "Обратная связь по коду": "🤖",
+        "Оценка сложности ревью [1-5]": "⏱️",
+        "Проверка соответствия тикету": "🎫",
     }
     markdown_text = ""
     if not incremental_review:
@@ -159,7 +173,7 @@ def convert_to_markdown_v2(output_data: dict,
         return ""
 
     if get_settings().get("pr_reviewer.enable_intro_text", False):
-        markdown_text += f"Here are some key observations to aid the review process:\n\n"
+        markdown_text += f"Вот ключевые наблюдения для помощи в процессе ревью:\n\n"
 
     if gfm_supported:
         markdown_text += "<table>\n"
@@ -172,7 +186,7 @@ def convert_to_markdown_v2(output_data: dict,
         key_nice = key.replace('_', ' ').capitalize()
         emoji = emojis.get(key_nice, "")
         if 'Estimated effort to review' in key_nice:
-            key_nice = 'Estimated effort to review'
+            key_nice = 'Оценка сложности ревью'
             value = str(value).strip()
             if value.isnumeric():
                 value_int = int(value)
@@ -195,32 +209,32 @@ def convert_to_markdown_v2(output_data: dict,
             if gfm_supported:
                 markdown_text += f"<tr><td>"
                 if is_value_no(value):
-                    markdown_text += f"{emoji}&nbsp;<strong>No relevant tests</strong>"
+                    markdown_text += f"{emoji}&nbsp;<strong>Нет соответствующих тестов</strong>"
                 else:
-                    markdown_text += f"{emoji}&nbsp;<strong>PR contains tests</strong>"
+                    markdown_text += f"{emoji}&nbsp;<strong>PR содержит тесты</strong>"
                 markdown_text += f"</td></tr>\n"
             else:
                 if is_value_no(value):
-                    markdown_text += f'### {emoji} No relevant tests\n\n'
+                    markdown_text += f'### {emoji} Нет соответствующих тестов\n\n'
                 else:
-                    markdown_text += f"### {emoji} PR contains tests\n\n"
+                    markdown_text += f"### {emoji} PR содержит тесты\n\n"
         elif 'ticket compliance check' in key_nice.lower():
             markdown_text = ticket_markdown_logic(emoji, markdown_text, value, gfm_supported)
         elif 'security concerns' in key_nice.lower():
             if gfm_supported:
                 markdown_text += f"<tr><td>"
                 if is_value_no(value):
-                    markdown_text += f"{emoji}&nbsp;<strong>No security concerns identified</strong>"
+                    markdown_text += f"{emoji}&nbsp;<strong>Проблемы безопасности не выявлены</strong>"
                 else:
-                    markdown_text += f"{emoji}&nbsp;<strong>Security concerns</strong><br><br>\n\n"
+                    markdown_text += f"{emoji}&nbsp;<strong>Проблемы безопасности</strong><br><br>\n\n"
                     value = emphasize_header(value.strip())
                     markdown_text += f"{value}"
                 markdown_text += f"</td></tr>\n"
             else:
                 if is_value_no(value):
-                    markdown_text += f'### {emoji} No security concerns identified\n\n'
+                    markdown_text += f'### {emoji} Проблемы безопасности не выявлены\n\n'
                 else:
-                    markdown_text += f"### {emoji} Security concerns\n\n"
+                    markdown_text += f"### {emoji} Проблемы безопасности\n\n"
                     value = emphasize_header(value.strip(), only_markdown=True)
                     markdown_text += f"{value}\n\n"
         elif 'todo sections' in key_nice.lower():
@@ -250,7 +264,7 @@ def convert_to_markdown_v2(output_data: dict,
             if is_value_no(value):
                 if gfm_supported:
                     markdown_text += f"<tr><td>"
-                    markdown_text += f"{emoji}&nbsp;<strong>No major issues detected</strong>"
+                    markdown_text += f"{emoji}&nbsp;<strong>Серьезных проблем не обнаружено</strong>"
                     markdown_text += f"</td></tr>\n"
                 else:
                     markdown_text += f"### {emoji} No major issues detected\n\n"
@@ -259,9 +273,9 @@ def convert_to_markdown_v2(output_data: dict,
                 if gfm_supported:
                     markdown_text += f"<tr><td>"
                     # markdown_text += f"{emoji}&nbsp;<strong>{key_nice}</strong><br><br>\n\n"
-                    markdown_text += f"{emoji}&nbsp;<strong>Recommended focus areas for review</strong><br><br>\n\n"
+                    markdown_text += f"{emoji}&nbsp;<strong>Рекомендуемые области для ревью</strong><br><br>\n\n"
                 else:
-                    markdown_text += f"### {emoji} Recommended focus areas for review\n\n#### \n"
+                    markdown_text += f"### {emoji} Рекомендуемые области для ревью\n\n#### \n"
                 for i, issue in enumerate(issues):
                     try:
                         if not issue or not isinstance(issue, dict):
@@ -377,14 +391,14 @@ def ticket_markdown_logic(emoji, markdown_text, value, gfm_supported) -> str:
                 # Calculate individual ticket compliance level
                 if fully_compliant_str:
                     if not_compliant_str:
-                        ticket_compliance_level = 'Partially compliant'
+                        ticket_compliance_level = 'Частично соответствует'
                     else:
                         if not requires_further_human_verification:
-                            ticket_compliance_level = 'Fully compliant'
+                            ticket_compliance_level = 'Полностью соответствует'
                         else:
-                            ticket_compliance_level = 'PR Code Verified'
+                            ticket_compliance_level = 'Код PR проверен'
                 elif not_compliant_str:
-                    ticket_compliance_level = 'Not compliant'
+                    ticket_compliance_level = 'Не соответствует'
 
                 # Store the compliance level for aggregation
                 if ticket_compliance_level:
@@ -392,11 +406,11 @@ def ticket_markdown_logic(emoji, markdown_text, value, gfm_supported) -> str:
 
                 # build compliance string
                 if fully_compliant_str:
-                    explanation += f"Compliant requirements:\n\n{fully_compliant_str}\n\n"
+                    explanation += f"Соответствующие требования:\n\n{fully_compliant_str}\n\n"
                 if not_compliant_str:
-                    explanation += f"Non-compliant requirements:\n\n{not_compliant_str}\n\n"
+                    explanation += f"Несоответствующие требования:\n\n{not_compliant_str}\n\n"
                 if requires_further_human_verification:
-                    explanation += f"Requires further human verification:\n\n{requires_further_human_verification}\n\n"
+                    explanation += f"Требует дополнительной проверки человеком:\n\n{requires_further_human_verification}\n\n"
                 ticket_compliance_str += f"\n\n**[{ticket_url.split('/')[-1]}]({ticket_url}) - {ticket_compliance_level}**\n\n{explanation}\n\n"
 
                 # for debugging
@@ -412,25 +426,25 @@ def ticket_markdown_logic(emoji, markdown_text, value, gfm_supported) -> str:
 
         # Calculate overall compliance level and emoji
         if all_compliance_levels:
-            if all(level == 'Fully compliant' for level in all_compliance_levels):
-                compliance_level = 'Fully compliant'
+            if all(level == 'Полностью соответствует' for level in all_compliance_levels):
+                compliance_level = 'Полностью соответствует'
                 compliance_emoji = '✅'
-            elif all(level == 'PR Code Verified' for level in all_compliance_levels):
-                compliance_level = 'PR Code Verified'
+            elif all(level == 'Код PR проверен' for level in all_compliance_levels):
+                compliance_level = 'Код PR проверен'
                 compliance_emoji = '✅'
-            elif any(level == 'Not compliant' for level in all_compliance_levels):
+            elif any(level == 'Не соответствует' for level in all_compliance_levels):
                 # If there's a mix of compliant and non-compliant tickets
-                if any(level in ['Fully compliant', 'PR Code Verified'] for level in all_compliance_levels):
-                    compliance_level = 'Partially compliant'
+                if any(level in ['Полностью соответствует', 'Код PR проверен'] for level in all_compliance_levels):
+                    compliance_level = 'Частично соответствует'
                     compliance_emoji = '🔶'
                 else:
-                    compliance_level = 'Not compliant'
+                    compliance_level = 'Не соответствует'
                     compliance_emoji = '❌'
-            elif any(level == 'Partially compliant' for level in all_compliance_levels):
-                compliance_level = 'Partially compliant'
+            elif any(level == 'Частично соответствует' for level in all_compliance_levels):
+                compliance_level = 'Частично соответствует'
                 compliance_emoji = '🔶'
             else:
-                compliance_level = 'PR Code Verified'
+                compliance_level = 'Код PR проверен'
                 compliance_emoji = '✅'
 
             # Set extra statistics outside the ticket loop
@@ -439,11 +453,11 @@ def ticket_markdown_logic(emoji, markdown_text, value, gfm_supported) -> str:
         # editing table row for ticket compliance analysis
         if gfm_supported:
             markdown_text += f"<tr><td>\n\n"
-            markdown_text += f"**{emoji} Ticket compliance analysis {compliance_emoji}**\n\n"
+            markdown_text += f"**{emoji} Анализ соответствия тикету {compliance_emoji}**\n\n"
             markdown_text += ticket_compliance_str
             markdown_text += f"</td></tr>\n"
         else:
-            markdown_text += f"### {emoji} Ticket compliance analysis {compliance_emoji}\n\n"
+            markdown_text += f"### {emoji} Анализ соответствия тикету {compliance_emoji}\n\n"
             markdown_text += ticket_compliance_str + "\n\n"
 
     return markdown_text

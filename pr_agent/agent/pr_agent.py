@@ -68,7 +68,7 @@ class PRAgent:
         is_valid, arg = CliArgs.validate_user_args(args)
         if not is_valid:
             get_logger().error(
-                f"CLI argument for param '{arg}' is forbidden. Use instead a configuration file."
+                f"Аргумент CLI для параметра '{arg}' запрещен. Используйте вместо этого файл конфигурации."
             )
             return False
 
@@ -99,7 +99,7 @@ class PRAgent:
 
         action = action.lstrip("/").lower()
         if action not in command2class:
-            get_logger().warning(f"Unknown command: {action}")
+            get_logger().warning(f"Неизвестная команда: {action}")
             return False
         with get_logger().contextualize(command=action, pr_url=pr_url):
             get_logger().info("PR-Agent request handler started", analytics=True)
@@ -122,5 +122,5 @@ class PRAgent:
         try:
             return await self._handle_request(pr_url, request, notify)
         except:
-            get_logger().exception("Failed to process the command.")
+            get_logger().exception("Не удалось обработать команду.")
             return False

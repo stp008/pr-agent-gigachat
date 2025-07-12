@@ -39,7 +39,7 @@ async def get_body(request: Request):
         body = await request.json()
     except Exception as e:
         get_logger().error("Error parsing request body", artifact={'error': e})
-        raise HTTPException(status_code=400, detail="Error parsing request body") from e
+        raise HTTPException(status_code=400, detail="Ошибка парсинга тела запроса") from e
 
 
     # Verify webhook signature
@@ -49,13 +49,13 @@ async def get_body(request: Request):
         signature_header = request.headers.get('x-gitea-signature', None)
         if not signature_header:
             get_logger().error("Missing signature header")
-            raise HTTPException(status_code=400, detail="Missing signature header")
+            raise HTTPException(status_code=400, detail="Отсутствует заголовок подписи")
         
         try:
             verify_signature(body_bytes, webhook_secret, f"sha256={signature_header}")
         except Exception as ex:
             get_logger().error(f"Invalid signature: {ex}")
-            raise HTTPException(status_code=401, detail="Invalid signature")
+            raise HTTPException(status_code=401, detail="Неверная подпись")
 
     return body
 

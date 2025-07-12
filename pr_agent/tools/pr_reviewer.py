@@ -421,8 +421,8 @@ class PRReviewer:
             is_auto_approved = self.git_provider.auto_approve()
             if is_auto_approved:
                 get_logger().info("Auto-approved PR")
-                self.git_provider.publish_comment("Auto-approved PR")
+                self.git_provider.publish_comment("PR автоматически одобрен")
         else:
             get_logger().info("Auto-approval option is disabled")
-            self.git_provider.publish_comment("Auto-approval option for PR-Agent is disabled. "
-                                              "You can enable it via a [configuration file](https://github.com/Codium-ai/pr-agent/blob/main/docs/REVIEW.md#auto-approval-1)")
+            self.git_provider.publish_comment("Опция автоматического одобрения для PR-Agent отключена. "
+                                              "Вы можете включить её через [файл конфигурации](https://github.com/Codium-ai/pr-agent/blob/main/docs/REVIEW.md#auto-approval-1)")
