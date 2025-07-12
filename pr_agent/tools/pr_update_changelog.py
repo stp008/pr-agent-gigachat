@@ -67,12 +67,12 @@ class PRUpdateChangelog:
             )
             if get_settings().config.publish_output:
                 self.git_provider.publish_comment(
-                    "Pushing changelog changes is not currently supported for this code platform"
+                    "Отправка изменений в changelog не поддерживается для данной платформы кода"
                 )
             return
 
         if get_settings().config.publish_output:
-            self.git_provider.publish_comment("Preparing changelog updates...", is_temporary=True)
+            self.git_provider.publish_comment("Подготовка обновлений changelog...", is_temporary=True)
 
         await retry_with_fallback_models(self._prepare_prediction, model_type=ModelType.WEAK)
 
@@ -89,7 +89,7 @@ class PRUpdateChangelog:
             if self.commit_changelog:
                 self._push_changelog_update(new_file_content, answer)
             else:
-                self.git_provider.publish_comment(f"**Changelog updates:** 🔄\n\n{answer}")
+                self.git_provider.publish_comment(f"**Обновления Changelog:** 🔄\n\n{answer}")
 
     async def _prepare_prediction(self, model: str):
         self.patches_diff = get_pr_diff(self.git_provider, self.token_handler, model)
@@ -135,16 +135,16 @@ class PRUpdateChangelog:
             new_file_content = answer
 
         if not self.commit_changelog:
-            answer += "\n\n\n>to commit the new content to the CHANGELOG.md file, please type:" \
+            answer += "\n\n\n>чтобы зафиксировать новое содержимое в файле CHANGELOG.md, введите:" \
                       "\n>'/update_changelog --pr_update_changelog.push_changelog_changes=true'\n"
 
         return new_file_content, answer
 
     def _push_changelog_update(self, new_file_content, answer):
         if get_settings().pr_update_changelog.get("skip_ci_on_push", True):
-            commit_message = "[skip ci] Update CHANGELOG.md"
+            commit_message = "[skip ci] Обновление CHANGELOG.md"
         else:
-            commit_message = "Update CHANGELOG.md"
+            commit_message = "Обновление CHANGELOG.md"
         self.git_provider.create_or_update_pr_file(
             file_path="CHANGELOG.md",
             branch=self.git_provider.get_pr_branch(),
@@ -157,7 +157,7 @@ class PRUpdateChangelog:
             if get_settings().config.git_provider == "github":
                 last_commit_id = list(self.git_provider.pr.get_commits())[-1]
                 d = dict(
-                    body="CHANGELOG.md update",
+                    body="Обновление CHANGELOG.md",
                     path="CHANGELOG.md",
                     line=max(2, len(answer.splitlines())),
                     start_line=1,
@@ -165,7 +165,7 @@ class PRUpdateChangelog:
                 self.git_provider.pr.create_review(commit=last_commit_id, comments=[d])
         except Exception:
             # we can't create a review for some reason, let's just publish a comment
-            self.git_provider.publish_comment(f"**Changelog updates: 🔄**\n\n{answer}")
+            self.git_provider.publish_comment(f"**Обновления Changelog: 🔄**\n\n{answer}")
 
     def _get_default_changelog(self):
         example_changelog = \

@@ -56,7 +56,7 @@ class PRQuestions:
                             'config': dict(get_settings().config)}
         get_logger().debug("Relevant configs", artifacts=relevant_configs)
         if get_settings().config.publish_output:
-            self.git_provider.publish_comment("Preparing answer...", is_temporary=True)
+            self.git_provider.publish_comment("Подготовка ответа...", is_temporary=True)
 
         # identify image
         img_path = self.identify_image_in_comment()
@@ -139,6 +139,6 @@ class PRQuestions:
                                artifact={"model_answer": model_answer, "sanitized_answer": model_answer_sanitized})
 
 
-        answer_str = f"### **Ask**❓\n{self.question_str}\n\n"
-        answer_str += f"### **Answer:**\n{model_answer_sanitized}\n\n"
+        answer_str = f"### **Вопрос**❓\n{self.question_str}\n\n"
+        answer_str += f"### **Ответ:**\n{model_answer_sanitized}\n\n"
         return answer_str

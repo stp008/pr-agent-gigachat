@@ -115,7 +115,7 @@ class PRCodeSuggestions:
                 if self.git_provider.is_supported("gfm_markdown"):
                     self.progress_response = self.git_provider.publish_comment(self.progress)
                 else:
-                    self.git_provider.publish_comment("Preparing suggestions...", is_temporary=True)
+                    self.git_provider.publish_comment("Подготовка предложений...", is_temporary=True)
 
             # # call the model to get the suggestions, and self-reflect on them
             # if not self.is_extended:
@@ -198,7 +198,7 @@ class PRCodeSuggestions:
                 else:
                     try:
                         self.git_provider.remove_initial_comment()
-                        self.git_provider.publish_comment(f"Failed to generate code suggestions for PR")
+                        self.git_provider.publish_comment(f"Не удалось сгенерировать предложения по коду для PR")
                     except Exception as e:
                         get_logger().exception(f"Failed to update persistent review, error: {e}")
 
@@ -551,9 +551,9 @@ class PRCodeSuggestions:
             get_logger().info('No suggestions found to improve this PR.')
             if self.progress_response:
                 return self.git_provider.edit_comment(self.progress_response,
-                                                      body='No suggestions found to improve this PR.')
+                                                      body='Предложения по улучшению этого PR не найдены.')
             else:
-                return self.git_provider.publish_comment('No suggestions found to improve this PR.')
+                return self.git_provider.publish_comment('Предложения по улучшению этого PR не найдены.')
 
         for d in data['code_suggestions']:
             try:

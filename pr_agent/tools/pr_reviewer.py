@@ -144,12 +144,12 @@ class PRReviewer:
                 if hasattr(self.git_provider, "previous_review"):
                     previous_review_url = self.git_provider.previous_review.html_url
                 if get_settings().config.publish_output:
-                    self.git_provider.publish_comment(f"Incremental Review Skipped\n"
-                                    f"No files were changed since the [previous PR Review]({previous_review_url})")
+                    self.git_provider.publish_comment(f"Инкрементальное ревью пропущено\n"
+                                    f"Файлы не изменялись с момента [предыдущего PR ревью]({previous_review_url})")
                 return None
 
             if get_settings().config.publish_output and not get_settings().config.get('is_auto_command', False):
-                self.git_provider.publish_comment("Preparing review...", is_temporary=True)
+                self.git_provider.publish_comment("Подготовка ревью...", is_temporary=True)
 
             await retry_with_fallback_models(self._prepare_prediction, model_type=ModelType.REGULAR)
             if not self.prediction:
@@ -252,7 +252,7 @@ class PRReviewer:
         if self.incremental.is_incremental:
             last_commit_url = f"{self.git_provider.get_pr_url()}/commits/" \
                               f"{self.git_provider.incremental.first_new_commit_sha}"
-            incremental_review_markdown_text = f"Starting from commit {last_commit_url}"
+            incremental_review_markdown_text = f"Начиная с коммита {last_commit_url}"
 
         markdown_text = convert_to_markdown_v2(data, self.git_provider.is_supported("gfm_markdown"),
                                             incremental_review_markdown_text,

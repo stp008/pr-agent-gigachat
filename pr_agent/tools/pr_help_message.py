@@ -101,7 +101,7 @@ class PRHelpMessage:
                 if not get_settings().get('openai.key'):
                     if get_settings().config.publish_output:
                         self.git_provider.publish_comment(
-                            "The `Help` tool chat feature requires an OpenAI API key for calculating embeddings")
+                            "Функция чата инструмента `Help` требует API ключ OpenAI для вычисления эмбеддингов")
                     else:
                         get_logger().error("The `Help` tool chat feature requires an OpenAI API key for calculating embeddings")
                     return
@@ -150,8 +150,8 @@ class PRHelpMessage:
                 if isinstance(response_yaml, str):
                     get_logger().warning(f"failing to parse response: {response_yaml}, publishing the response as is")
                     if get_settings().config.publish_output:
-                        answer_str = f"### Question: \n{self.question_str}\n\n"
-                        answer_str += f"### Answer:\n\n"
+                        answer_str = f"### Вопрос: \n{self.question_str}\n\n"
+                        answer_str += f"### Ответ:\n\n"
                         answer_str += response_yaml
                         self.git_provider.publish_comment(answer_str)
                     return ""
@@ -161,9 +161,9 @@ class PRHelpMessage:
                 if not relevant_sections:
                     get_logger().info(f"Could not find relevant answer for the question: {self.question_str}")
                     if get_settings().config.publish_output:
-                        answer_str = f"### Question: \n{self.question_str}\n\n"
-                        answer_str += f"### Answer:\n\n"
-                        answer_str += f"Could not find relevant information to answer the question. Please provide more details and try again."
+                        answer_str = f"### Вопрос: \n{self.question_str}\n\n"
+                        answer_str += f"### Ответ:\n\n"
+                        answer_str += f"Не удалось найти релевантную информацию для ответа на вопрос. Пожалуйста, предоставьте больше деталей и попробуйте снова."
                         self.git_provider.publish_comment(answer_str)
                     return ""
 

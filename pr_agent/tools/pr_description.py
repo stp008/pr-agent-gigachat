@@ -99,7 +99,7 @@ class PRDescription:
                                 'config': dict(get_settings().config)}
             get_logger().debug("Relevant configs", artifact=relevant_configs)
             if get_settings().config.publish_output and not get_settings().config.get('is_auto_command', False):
-                self.git_provider.publish_comment("Preparing PR description...", is_temporary=True)
+                self.git_provider.publish_comment("Подготовка описания PR...", is_temporary=True)
 
             # ticket extraction if exists
             await extract_and_cache_pr_tickets(self.git_provider, self.vars)
@@ -186,7 +186,7 @@ class PRDescription:
                         latest_commit_url = self.git_provider.get_latest_commit_url()
                         if latest_commit_url:
                             pr_url = self.git_provider.get_pr_url()
-                            update_comment = f"**[PR Description]({pr_url})** updated to latest commit ({latest_commit_url})"
+                            update_comment = f"**[Описание PR]({pr_url})** обновлено до последнего коммита ({latest_commit_url})"
                             self.git_provider.publish_comment(update_comment)
                 self.git_provider.remove_initial_comment()
             else:
