@@ -340,9 +340,9 @@ class BitbucketServerProvider(GitProvider):
 
     def get_line_link(self, relevant_file: str, relevant_line_start: int, relevant_line_end: int = None) -> str:
         if relevant_line_start == -1:
-            link = f"{self.pr_url}/diff#{quote_plus(relevant_file)}"
+            link = f"{self.pr_url.rstrip('/')}/diff#{quote_plus(relevant_file)}"
         else:
-            link = f"{self.pr_url}/diff#{quote_plus(relevant_file)}?t={relevant_line_start}"
+            link = f"{self.pr_url.rstrip('/')}/diff#{quote_plus(relevant_file)}?t={relevant_line_start}"
         return link
 
     def generate_link_to_relevant_line_number(self, suggestion) -> str:
@@ -358,7 +358,7 @@ class BitbucketServerProvider(GitProvider):
 
             if absolute_position != -1:
                 if self.pr:
-                    link = f"{self.pr_url}/diff#{quote_plus(relevant_file)}?t={absolute_position}"
+                    link = f"{self.pr_url.rstrip('/')}/diff#{quote_plus(relevant_file)}?t={absolute_position}"
                     return link
                 else:
                     if get_settings().config.verbosity_level >= 2:
@@ -368,7 +368,7 @@ class BitbucketServerProvider(GitProvider):
                     get_logger().info(f"Failed adding line link to '{relevant_file}' since position not found")
 
             if absolute_position != -1 and self.pr_url:
-                link = f"{self.pr_url}/diff#{quote_plus(relevant_file)}?t={absolute_position}"
+                link = f"{self.pr_url.rstrip('/')}/diff#{quote_plus(relevant_file)}?t={absolute_position}"
                 return link
         except Exception as e:
             if get_settings().config.verbosity_level >= 2:
